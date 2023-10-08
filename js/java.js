@@ -22,55 +22,24 @@ productos.forEach((product)=> {
     content.append(comprar);
 
     comprar.addEventListener("click", () =>{
+
+        const repeat = carrito.some((repeatPorduct) => repeatPorduct.id === product.id);
+        console.log(repeat);
+
+        if (repeat){
+            carrito.map((prod) => {
+                if(prod.id === product.id){
+                    prod.cantidad++                }
+            })
+        }
         carrito.push({
             id : product.id,
             img : product.foto,
             precio : product.precio,
             nombre: product.nombre,
+            cantidad : product.cantidad,
         })
         console.log(carrito);
     })
 })
 
-verCarrito.addEventListener("click", ()=> {
-    modalContainer.innerHTML = "";
-    modalContainer.style.display = "flex";
-    const modalheader = document.createElement ("div");
-    modalheader.className = "modal-header"
-    modalheader.innerHTML = `
-    <h1 class="modal-header-title">Carrito.</h1>
-    `;
-
-    modalContainer.append(modalheader);
-
-    const modalbutton = document.createElement ("h1");
-    modalbutton.innerText = "X";
-    modalbutton.className = "modal-hearder-button";
-
-    modalbutton.addEventListener("click", () =>{
-        modalContainer.style.display ="none"
-    })
-
-    modalheader.append (modalbutton);
-
-    carrito.forEach ((product) => {
-        let carritoContent = document.createElement("div")
-        carritoContent.className = "modal-content"
-        carritoContent.innerHTML = `
-        <img src=" ${product.foto}">
-        <h3> ${product.nombre}</h3>
-        <p> ${product.precio} $ </p>
-        `;
-
-        modalContainer.append(carritoContent)
-    });
-
-    const total = carrito.reduce((acc, el) => acc + el.precio, 0);
-
-    const totalbuying = document.createElement("div")
-    totalbuying.className = "total-content"
-    totalbuying.innerHTML = `total a pagar = ${total} $`;
-    modalContainer.append(totalbuying);
-
-    
-})
